@@ -1,0 +1,12 @@
+POST http://localhost/resolvendo_problema/problema_api/problema.php
+Content-Type: application/json
+
+{
+    "nome": "João victor",
+    "email": "joa.treerex@ample.com",
+    "senha": "Senha_123",
+    "telefone": "1234567891",
+    "endereco": "Rua A, 123",
+    "estado": "SP",
+    "data_nascimento": "1990-01-01"
+}
