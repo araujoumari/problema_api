@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "nome": "João victor",
-    "email": "joa.treerex@ample.com",
+    "email": "joa.treeex@ample.com",
     "senha": "Senha_123",
     "telefone": "1234567891",
     "endereco": "Rua A, 123",
