@@ -1,4 +1,4 @@
-POST http://localhost/resolvendo_problema/problema_api/problema.php
+POST http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
 Content-Type: application/json
 
 {
@@ -10,3 +10,12 @@ Content-Type: application/json
     "estado": "SP",
     "data_nascimento": "1990-01-01"
 }
+###
+GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php 
+
+###
+GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php?id=$2y$10$.pEfpV8uWfXHUd7aVwrM8epvY4Bx4I.GefUigYW8IJm3F5mxOQBxm 
+
+
+###
+DELETE http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
