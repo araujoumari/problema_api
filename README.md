@@ -2,6 +2,15 @@
 
 Projeto feito para realizar um cadastro de algum usuário, essa API permite cadastrar, listar, deletar e buscar usuários.
 
+## Headers
+
+```json
+    header("Content-Type: application/json; charset=UTF-8");
+    header("Access-Control-Allow-Origin: *");
+    header("Access-Control-Allow-Methods: POST, PUT");
+    header("Access-Control-Allow-Headers: Content-Type");
+```
+
 ## URL
 
 http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
@@ -31,95 +40,89 @@ http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
 
 ```
 
-- GET (Usuários e ID)
+- GET (Usuários)
 
 ```json
-if ($method === "GET") {
-            $id = $_GET['id'] ?? null;
+{
+  "status": "sucesso",
+  "usuarios": [
+    {
+      "id": "0a29-22-77-11-ab4365",
+      "nome": "João victor",
+      "email": "joa.treeex@ample.com",
+      "telefone": "1234567891",
+      "endereco": "Rua A, 123",
+      "estado": "SP",
+      "data_nascimento": "1990-01-01",
+      "criado_em": "2025-08-28 19:39:24"
+    },
+    {
+      "id": "9bd3-1a-0e-8f-6a469e",
+      "nome": "João victor",
+      "email": "joa.treerex@ample.com",
+      "telefone": "1234567891",
+      "endereco": "Rua A, 123",
+      "estado": "SP",
+      "data_nascimento": "1990-01-01",
+      "criado_em": "2025-08-26 19:53:25"
+    }
+  ]
+}
 
-            if ($id) {
-                // Buscar apenas o usuário com o ID informado
-                $sql = "SELECT id, nome, email, telefone, endereco, estado, data_nascimento, criado_em
-                        FROM api_usuarios WHERE id = '$id' LIMIT 1";
-                $result = $conn->query($sql);
+```
 
-                if ($result && $result->num_rows > 0) {
-                    $usuario = $result->fetch_assoc();
-                    echo json_encode([
-                        "status" => "sucesso",
-                        "usuario" => $usuario
-                    ], JSON_UNESCAPED_UNICODE);
-                } else {
-                    http_response_code(404);
-                    echo json_encode([
-                        "status" => "erro",
-                        "erros" => ["Usuário não encontrado"]
-                    ], JSON_UNESCAPED_UNICODE);
-                }
-            } else {
-                $sql = "SELECT id, nome, email, telefone, endereco, estado, data_nascimento, criado_em
-                        FROM api_usuarios ORDER BY criado_em DESC";
-                $result = $conn->query($sql);
+- GET (Id)
 
-                $usuarios = [];
-                if ($result && $result->num_rows > 0) {
-                    while ($row = $result->fetch_assoc()) {
-                        $usuarios[] = $row;
-                    }
-                }
-
-                echo json_encode([
-                    "status" => "sucesso",
-                    "usuarios" => $usuarios
-                ], JSON_UNESCAPED_UNICODE);
-            }
-
-            exit;
-        }
-
+```json
+{
+  "status": "sucesso",
+  "usuario": {
+    "id": "9bd3-1a-0e-8f-6a469e",
+    "nome": "João victor",
+    "email": "joa.treerex@ample.com",
+    "telefone": "1234567891",
+    "endereco": "Rua A, 123",
+    "estado": "SP",
+    "data_nascimento": "1990-01-01",
+    "criado_em": "2025-08-26 19:53:25"
+  }
+}
 ```
 
 - DELETE
 ```json
-if ($method === "DELETE") {
-        parse_str(file_get_contents("php://input"), $input);
-        $id = $input['id'] ?? null;
-
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["É necessário informar o ID do usuário."]
-            ], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        $verifica = $conn->query("SELECT id FROM api_usuarios WHERE id='$id'");
-        if ($verifica->num_rows === 0) {
-            http_response_code(404);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["Usuário não encontrado."]
-            ], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        if ($conn->query("DELETE FROM api_usuarios WHERE id='$id'")) {
-            echo json_encode([
-                "status" => "sucesso",
-                "mensagem" => "Usuário excluído com sucesso."
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            http_response_code(500);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["Erro ao excluir usuário."]
-            ], JSON_UNESCAPED_UNICODE);
-        }
-        exit;
-        
-        }
+{
+  "status": "sucesso",
+  "mensagem": "Usuário excluído com sucesso."
+}5
 ```
+
+### Erros
+
+- POST
+```json
+{
+  "status": "erro",
+  "erros": [
+    "A senha deve ter pelo menos 8 caracteres.",
+    "A senha deve conter pelo menos uma letra maiúscula.",
+    "A senha deve conter pelo menos uma letra minúscula.",
+    "A senha deve conter pelo menos um caractere especial (ex: !@#$%^&*)."
+  ]
+}
+```
+- GET (Id) e DELETE
+
+```json
+{
+  "status": "erro",
+  "erros": [
+    "Usuário não encontrado"
+  ]
+}
+```
+
+
 ## Observações
 
 - Todas as senhas são armazenadas com hash seguro.

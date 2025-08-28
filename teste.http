@@ -11,11 +11,11 @@ Content-Type: application/json
     "data_nascimento": "1990-01-01"
 }
 ###
-GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php 
+GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
 
 ###
-GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php?id=$2y$10$.pEfpV8uWfXHUd7aVwrM8epvY4Bx4I.GefUigYW8IJm3F5mxOQBxm 
+GET http://localhost/resolvendo_problema/problema_api/problema_api/problema.php?id=9bd3-1a-0e-8f-6a469
 
 
 ###
-DELETE http://localhost/resolvendo_problema/problema_api/problema_api/problema.php
+DELETE http://localhost/resolvendo_problema/problema_api/problema_api/problema.php?id=0a29-22-77-11-ab4365

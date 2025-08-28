@@ -55,43 +55,54 @@
 
     /*Rota DELETE*/
     if ($method === "DELETE") {
+    $id = $_GET['id'] ?? null;
+
+    if (!$id) {
         parse_str(file_get_contents("php://input"), $input);
         $id = $input['id'] ?? null;
+    }
 
-        if (!$id) {
-            http_response_code(400);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["É necessário informar o ID do usuário."]
-            ], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        $verifica = $conn->query("SELECT id FROM api_usuarios WHERE id='$id'");
-        if ($verifica->num_rows === 0) {
-            http_response_code(404);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["Usuário não encontrado."]
-            ], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
-
-        if ($conn->query("DELETE FROM api_usuarios WHERE id='$id'")) {
-            echo json_encode([
-                "status" => "sucesso",
-                "mensagem" => "Usuário excluído com sucesso."
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            http_response_code(500);
-            echo json_encode([
-                "status" => "erro",
-                "erros" => ["Erro ao excluir usuário."]
-            ], JSON_UNESCAPED_UNICODE);
-        }
+    if (!$id) {
+        http_response_code(400);
+        echo json_encode([
+            "status" => "erro",
+            "erros" => ["É necessário informar o ID do usuário."]
+        ], JSON_UNESCAPED_UNICODE);
         exit;
-        
-        }
+    }
+
+    $stmt = $conn->prepare("SELECT id FROM api_usuarios WHERE id = ?");
+    $stmt->bind_param("s", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 0) {
+        http_response_code(404);
+        echo json_encode([
+            "status" => "erro",
+            "erros" => ["Usuário não encontrado."]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $stmt = $conn->prepare("DELETE FROM api_usuarios WHERE id = ?");
+    $stmt->bind_param("s", $id);
+
+    if ($stmt->execute()) {
+        echo json_encode([
+            "status" => "sucesso",
+            "mensagem" => "Usuário excluído com sucesso."
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        http_response_code(500);
+        echo json_encode([
+            "status" => "erro",
+            "erros" => ["Erro ao excluir usuário."]
+        ], JSON_UNESCAPED_UNICODE);
+    }
+    exit;
+}
+
     
 
     if($method == "POST") {
